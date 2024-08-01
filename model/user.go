@@ -15,3 +15,7 @@ func NewUser(name string) *User {
 func (u *User) GetName() string {
 	return u.Name
 }
+
+func (u *User) GetFolders() map[string]*Folder {
+	return u.Folders
+}

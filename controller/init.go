@@ -8,6 +8,7 @@ import (
 func init() {
 	CommandController = NewCommandController()
 	UserController = NewUserController()
+	FolderController = NewFolderController()
 }
 
 var (
@@ -18,4 +19,11 @@ var (
 
 var (
 	Register = service.UserService.Register
+)
+
+var (
+	CreateFolder = service.FolderService.Create
+	DeleteFolder = service.FolderService.Delete
+	ListFolders  = service.FolderService.List
+	RenameFolder = service.FolderService.Rename
 )

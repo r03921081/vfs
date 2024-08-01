@@ -6,7 +6,7 @@ type Folder struct {
 	Name        string
 	Description string
 	Files       map[string]*File
-	CreatedAt   time.Time
+	Created     time.Time
 }
 
 func NewFolder(name string, description string) *Folder {
@@ -14,6 +14,10 @@ func NewFolder(name string, description string) *Folder {
 		Name:        name,
 		Description: description,
 		Files:       map[string]*File{},
-		CreatedAt:   time.Now().UTC(),
+		Created:     time.Now().UTC(),
 	}
+}
+
+func (f *Folder) GetFiles() map[string]*File {
+	return f.Files
 }

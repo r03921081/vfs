@@ -24,10 +24,10 @@ func NewUserRepository() IUserRepository {
 func (r *userRepository) Register(user *model.User) common.ICodeError {
 	username := user.GetName()
 
-	if _, ok := common.Cache.Get(username); ok {
+	if _, ok := CacheStorage.Get(username); ok {
 		return common.NewCodeError(fmt.Sprintf(constant.ErrMsgHasAlreadyExisted, username))
 	}
 
-	common.Cache.Set(username, user, cache.DefaultExpiration)
+	CacheStorage.Set(username, user, cache.DefaultExpiration)
 	return nil
 }

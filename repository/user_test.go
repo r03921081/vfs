@@ -2,6 +2,7 @@ package repository
 
 import (
 	"fmt"
+	"r03921081/vfs/common"
 	"r03921081/vfs/constant"
 	"r03921081/vfs/model"
 	"testing"
@@ -10,6 +11,7 @@ import (
 )
 
 func Test_userRepository_Register(t *testing.T) {
+	CacheStorage = common.NewCache()
 	userRepository := NewUserRepository()
 
 	// Registered user1 successfully
