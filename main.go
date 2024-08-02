@@ -4,7 +4,9 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"r03921081/vfs/constant"
 	"r03921081/vfs/controller"
+	"strings"
 )
 
 func main() {
@@ -13,6 +15,10 @@ func main() {
 		fmt.Print("# ")
 		scanner.Scan()
 		command := scanner.Text()
+
+		if strings.ToLower(command) == constant.CommandExit.String() {
+			os.Exit(0)
+		}
 
 		controller.CommandController.Handle(command)
 	}

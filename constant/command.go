@@ -3,6 +3,8 @@ package constant
 type Command string
 
 const (
+	CommandExit Command = "exit"
+
 	CommandRegister Command = "register"
 
 	CommandCreateFolder Command = "create-folder"
