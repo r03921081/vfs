@@ -63,14 +63,14 @@ func (r *folderRepository) List(username, sortby, orderby string) ([]*model.Fold
 	}
 	u := user.(*model.User)
 	folders := []*model.Folder{}
-	for _, v := range u.GetFolders() {
-		folders = append(folders, v)
+	for _, folder := range u.GetFolders() {
+		folders = append(folders, folder)
 	}
 	if len(folders) == 0 {
 		return folders, nil
 	}
 
-	folders = sortFolders(folders, sortby, orderby)
+	folders = sortItems(folders, sortby, orderby)
 
 	return folders, nil
 }

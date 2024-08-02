@@ -6,6 +6,9 @@ var (
 	PromptDeleteFolder = "Usage: delete-folder [username] [foldername]"
 	PromptListFolders  = "Usage: list-folders [username] [--sort-name|--sort-created] [asc|desc]"
 	PromptRenameFolder = "Usage: rename-folder [username] [foldername] [new-folder-name]"
+	PromptCreateFile   = "Usage: create-file [username] [foldername] [filename] [description]?"
+	PromptDeleteFile   = "Usage: delete-file [username] [foldername] [filename]"
+	PromptListFiles    = "Usage: list-files [username] [foldername] [--sort-name|--sort-created] [asc|desc]"
 )
 
 var (
@@ -17,6 +20,7 @@ var (
 
 var (
 	WarningMsgDoesNotHaveAnyFolders = "The %s doesn't have any folders."
+	WarningMsgTheFolderIsEmpty      = "The folder is empty."
 )
 
 var (

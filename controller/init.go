@@ -9,6 +9,7 @@ func init() {
 	CommandController = NewCommandController()
 	UserController = NewUserController()
 	FolderController = NewFolderController()
+	FileController = NewFileController()
 }
 
 var (
@@ -26,4 +27,8 @@ var (
 	DeleteFolder = service.FolderService.Delete
 	ListFolders  = service.FolderService.List
 	RenameFolder = service.FolderService.Rename
+
+	CreateFile = service.FileService.Create
+	DeleteFile = service.FileService.Delete
+	ListFiles  = service.FileService.List
 )

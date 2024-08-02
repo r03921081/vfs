@@ -5,6 +5,7 @@ import "r03921081/vfs/repository"
 func init() {
 	UserService = NewUserService()
 	FolderService = NewFolderService()
+	FileService = NewFileService()
 }
 
 var (
@@ -14,4 +15,8 @@ var (
 	DeleteFolder = repository.FolderRepository.Delete
 	ListFolders  = repository.FolderRepository.List
 	RenameFolder = repository.FolderRepository.Rename
+
+	CreateFile = repository.FileRepository.Create
+	DeleteFile = repository.FileRepository.Delete
+	ListFiles  = repository.FileRepository.List
 )

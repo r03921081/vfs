@@ -40,14 +40,14 @@ func Test_folderService_Delete(t *testing.T) {
 	name := "user1"
 	folder1 := "folder1"
 
-	// Create folder successfully
+	// Delete folder successfully
 	DeleteFolder = func(username string, folderName string) common.ICodeError {
 		return nil
 	}
 	err := folderService.Delete(name, folder1)
 	assert.Nil(t, err)
 
-	// Create folder failed
+	// Delete folder failed
 	DeleteFolder = func(username string, folderName string) common.ICodeError {
 		return common.NewCodeError(constant.ErrMsgDoesNotExist)
 	}
@@ -61,7 +61,7 @@ func Test_folderService_List(t *testing.T) {
 	name := "user1"
 	folder1 := "folder1"
 
-	// Create folder successfully
+	// List folders successfully
 	ListFolders = func(username string, sortby string, orderby string) ([]*model.Folder, common.ICodeError) {
 		return []*model.Folder{model.NewFolder(folder1, "")}, nil
 	}
@@ -71,7 +71,7 @@ func Test_folderService_List(t *testing.T) {
 	assert.Equal(t, 1, len(folders))
 	assert.Equal(t, folder1, folders[0].Name)
 
-	// Create folder failed
+	// List folders failed
 	ListFolders = func(username string, sortby string, orderby string) ([]*model.Folder, common.ICodeError) {
 		return nil, common.NewCodeError(constant.ErrMsgDoesNotExist)
 	}
@@ -87,14 +87,14 @@ func Test_folderService_Rename(t *testing.T) {
 	folder1 := "folder1"
 	newFolder := "newFolder"
 
-	// Create folder successfully
+	// Rename folder successfully
 	RenameFolder = func(username string, oldFolderName string, newFolderName string) common.ICodeError {
 		return nil
 	}
 	err := folderService.Rename(name, folder1, newFolder)
 	assert.Nil(t, err)
 
-	// Create folder failed
+	// Rename folder failed
 	RenameFolder = func(username string, oldFolderName string, newFolderName string) common.ICodeError {
 		return common.NewCodeError(constant.ErrMsgDoesNotExist)
 	}

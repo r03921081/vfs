@@ -18,6 +18,10 @@ func NewFolder(name string, description string) *Folder {
 	}
 }
 
-func (f *Folder) GetFiles() map[string]*File {
-	return f.Files
+func (f *Folder) GetName() string {
+	return f.Name
+}
+
+func (f *Folder) GetCreated() time.Time {
+	return f.Created
 }

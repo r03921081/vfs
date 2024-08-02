@@ -15,3 +15,11 @@ func NewFile(name string, description string) *File {
 		Created:     time.Now().UTC(),
 	}
 }
+
+func (f *File) GetName() string {
+	return f.Name
+}
+
+func (f *File) GetCreated() time.Time {
+	return f.Created
+}

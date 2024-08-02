@@ -6,34 +6,34 @@ import (
 	"sort"
 )
 
-func sortFolders(folders []*model.Folder, sortby, orderby string) []*model.Folder {
-	if sortby != constant.SortCreated {
+func sortItems[T model.Sortable](items []T, sortby, orderby string) []T {
+	if sortby != constant.SortName && sortby != constant.SortCreated {
 		sortby = constant.SortName
 	}
-	if orderby != constant.OrderDesc {
+	if orderby != constant.OrderAsc && orderby != constant.OrderDesc {
 		orderby = constant.OrderAsc
 	}
 
 	if sortby == constant.SortCreated {
 		if orderby == constant.OrderAsc {
-			sort.Slice(folders, func(i, j int) bool {
-				return folders[i].Created.Before(folders[j].Created)
+			sort.Slice(items, func(i, j int) bool {
+				return items[i].GetCreated().Before(items[j].GetCreated())
 			})
 		} else {
-			sort.Slice(folders, func(i, j int) bool {
-				return folders[i].Created.After(folders[j].Created)
+			sort.Slice(items, func(i, j int) bool {
+				return items[i].GetCreated().After(items[j].GetCreated())
 			})
 		}
 	} else {
 		if orderby == constant.OrderAsc {
-			sort.Slice(folders, func(i, j int) bool {
-				return folders[i].Name < folders[j].Name
+			sort.Slice(items, func(i, j int) bool {
+				return items[i].GetName() < items[j].GetName()
 			})
 		} else {
-			sort.Slice(folders, func(i, j int) bool {
-				return folders[i].Name > folders[j].Name
+			sort.Slice(items, func(i, j int) bool {
+				return items[i].GetName() > items[j].GetName()
 			})
 		}
 	}
-	return folders
+	return items
 }

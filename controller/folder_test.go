@@ -24,7 +24,7 @@ func Test_folderController_Create(t *testing.T) {
 	os.Stdout = w
 
 	CreateFolder = func(username string, folder *model.Folder) (*model.Folder, common.ICodeError) {
-		return model.NewFolder(folderName1, description1), nil
+		return folder, nil
 	}
 
 	folderController.Create(name, folderName1, description1)
