@@ -60,7 +60,7 @@ func TestIsValidInput(t *testing.T) {
 		{
 			name: "Valid name",
 			args: args{
-				input: "user1",
+				input: "user1.t-est_",
 				r:     ValidName,
 			},
 			want: true,

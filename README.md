@@ -57,7 +57,7 @@ Usage: exit
 1. The entry point is the command controller, responsible for recognizing and processing input commands.
 2. The maximum lengths are defined as follows: MaxLengthCommand = 500, MaxLengthName = 16, and MaxLengthDescription = 100.
 3. Commands can contain only the following characters: `a-z`, `A-Z`, `0-9`, and the symbols `+`, `-`, `*`, `/`, `_`, `@`, `[`, `]`, `(`, `)`, `{`, `}`, `.`, and spaces.
-4. Names can only contain `a-z`, `A-Z`, and `0-9`.
+4. Names can only contain `a-z`, `A-Z`, `0-9` and the symbols `-`, `_` and `.`.
 5. The file system data structure is as follows:
 ```go
 type User struct {
