@@ -12,7 +12,7 @@ var (
 	ValidName = regexp.MustCompile(fmt.Sprintf(`^[a-zA-Z0-9]{1,%d}$`, constant.MaxLengthName))
 
 	// Description validation
-	ValidDescription = regexp.MustCompile(fmt.Sprintf(`^[a-zA-Z0-9]{1,%d}$`, constant.MaxLengthDescription))
+	ValidDescription = regexp.MustCompile(fmt.Sprintf(`^[a-zA-Z0-9\+\-\*/_\@\[\]\(\)\{\}\.\s\-]{1,%d}$`, constant.MaxLengthDescription))
 )
 
 func IsValidInput(input string, r *regexp.Regexp) bool {

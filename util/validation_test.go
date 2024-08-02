@@ -108,7 +108,7 @@ func TestIsValidInput(t *testing.T) {
 		{
 			name: "Invalid description",
 			args: args{
-				input: "description 1",
+				input: "~description 1",
 				r:     ValidDescription,
 			},
 			want: false,

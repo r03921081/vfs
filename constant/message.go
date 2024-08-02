@@ -1,9 +1,5 @@
 package constant
 
-import (
-	"fmt"
-)
-
 var (
 	PromptRegister     = "Usage: register [username]"
 	PromptCreateFolder = "Usage: create-folder [username] [foldername] [description]?"
@@ -37,6 +33,4 @@ var (
 	ErrMsgHasAlreadyExisted   = "The %s has already existed."
 	ErrMsgContainInvalidChars = "The %s contain invalid chars."
 	ErrMsgDoesNotExist        = "The %s doesn't exist."
-
-	ErrMsgCommandShouldNotBeLongerThan = fmt.Sprintf("The command should not be longer than %d chars.", MaxLengthCommand)
 )

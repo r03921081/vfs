@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"r03921081/vfs/constant"
 	"r03921081/vfs/util"
 	"strings"
@@ -19,6 +20,11 @@ func NewCommandController() ICommandController {
 }
 
 func (c *commandController) Handle(command string) {
+	if !util.IsValidInput(command, util.ValidCommand) {
+		PrintError(fmt.Sprintf(constant.ErrMsgContainInvalidChars, command))
+		return
+	}
+
 	parts := strings.Fields(command)
 	if len(parts) == 0 {
 		PrintError(constant.ErrMsgUnrecognizedCommand)
