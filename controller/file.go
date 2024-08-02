@@ -22,13 +22,17 @@ func NewFileController() IFileController {
 }
 
 func (c *fileController) Create(username, folderName, fileName, description string) {
+	if !util.IsValidInput(fileName, util.ValidName) {
+		PrintError(fmt.Sprintf(constant.ErrMsgContainInvalidChars, fileName))
+		return
+	}
 	file := model.NewFile(fileName, description)
 	file, err := CreateFile(username, folderName, file)
 	if err != nil {
 		PrintError(err.ErrorMessage())
 		return
 	}
-	PrintSuccess(fmt.Sprintf(constant.MsgCreateSuccessfully, file.Name))
+	PrintSuccess(fmt.Sprintf(constant.MsgCreateFileSuccessfully, file.Name, username, folderName))
 }
 
 func (c *fileController) Delete(username, folderName, fileName string) {

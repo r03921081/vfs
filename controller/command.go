@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"r03921081/vfs/constant"
 	"r03921081/vfs/util"
 	"strings"
@@ -25,7 +24,6 @@ func (c *commandController) Handle(command string) {
 		PrintError(constant.ErrMsgUnrecognizedCommand)
 		return
 	}
-	fmt.Println(parts)
 
 	switch constant.Command(parts[0]) {
 	case constant.CommandRegister:

@@ -22,8 +22,12 @@ func NewFolderController() IFolderController {
 	return &folderController{}
 }
 
-func (c *folderController) Create(username string, foldername, description string) {
-	folder := model.NewFolder(foldername, description)
+func (c *folderController) Create(username string, folderName, description string) {
+	if !util.IsValidInput(folderName, util.ValidName) {
+		PrintError(fmt.Sprintf(constant.ErrMsgContainInvalidChars, folderName))
+		return
+	}
+	folder := model.NewFolder(folderName, description)
 	folder, err := CreateFolder(username, folder)
 	if err != nil {
 		PrintError(err.ErrorMessage())
@@ -32,13 +36,13 @@ func (c *folderController) Create(username string, foldername, description strin
 	PrintSuccess(fmt.Sprintf(constant.MsgCreateSuccessfully, folder.Name))
 }
 
-func (c *folderController) Delete(username, foldername string) {
-	err := DeleteFolder(username, foldername)
+func (c *folderController) Delete(username, folderName string) {
+	err := DeleteFolder(username, folderName)
 	if err != nil {
 		PrintError(err.ErrorMessage())
 		return
 	}
-	PrintSuccess(fmt.Sprintf(constant.MsgDeleteSuccessfully, foldername))
+	PrintSuccess(fmt.Sprintf(constant.MsgDeleteSuccessfully, folderName))
 }
 
 func (c *folderController) List(username, sortby, orderby string) {
@@ -54,11 +58,15 @@ func (c *folderController) List(username, sortby, orderby string) {
 	PrintSuccess(util.FormatFolders(folders, username))
 }
 
-func (c *folderController) Rename(username, oldfoldername, foldername string) {
-	err := RenameFolder(username, oldfoldername, foldername)
+func (c *folderController) Rename(username, oldFolderName, newFolderName string) {
+	if !util.IsValidInput(newFolderName, util.ValidName) {
+		PrintError(fmt.Sprintf(constant.ErrMsgContainInvalidChars, newFolderName))
+		return
+	}
+	err := RenameFolder(username, oldFolderName, newFolderName)
 	if err != nil {
 		PrintError(err.ErrorMessage())
 		return
 	}
-	PrintSuccess(fmt.Sprintf(constant.MsgRenameSuccessfully, oldfoldername, foldername))
+	PrintSuccess(fmt.Sprintf(constant.MsgRenameSuccessfully, oldFolderName, newFolderName))
 }

@@ -1,5 +1,9 @@
 package constant
 
+import (
+	"fmt"
+)
+
 var (
 	PromptRegister     = "Usage: register [username]"
 	PromptCreateFolder = "Usage: create-folder [username] [foldername] [description]?"
@@ -12,10 +16,11 @@ var (
 )
 
 var (
-	MsgAddSuccessfully    = "Add %s successfully."
-	MsgCreateSuccessfully = "Create %s successfully."
-	MsgDeleteSuccessfully = "Delete %s successfully."
-	MsgRenameSuccessfully = "Rename %s to %s successfully."
+	MsgAddSuccessfully        = "Add %s successfully."
+	MsgCreateSuccessfully     = "Create %s successfully."
+	MsgDeleteSuccessfully     = "Delete %s successfully."
+	MsgRenameSuccessfully     = "Rename %s to %s successfully."
+	MsgCreateFileSuccessfully = "Create %s in %s/%s successfully."
 )
 
 var (
@@ -32,4 +37,6 @@ var (
 	ErrMsgHasAlreadyExisted   = "The %s has already existed."
 	ErrMsgContainInvalidChars = "The %s contain invalid chars."
 	ErrMsgDoesNotExist        = "The %s doesn't exist."
+
+	ErrMsgCommandShouldNotBeLongerThan = fmt.Sprintf("The command should not be longer than %d chars.", MaxLengthCommand)
 )

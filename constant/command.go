@@ -18,3 +18,9 @@ const (
 func (c Command) String() string {
 	return string(c)
 }
+
+const (
+	MaxLengthCommand     = 500
+	MaxLengthName        = 16
+	MaxLengthDescription = 100
+)

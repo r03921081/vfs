@@ -65,6 +65,28 @@ func Test_folderController_Create_with_error(t *testing.T) {
 	assert.Equal(t, constant.PrefixError+expectedOutput+"\n", buf.String())
 }
 
+func Test_folderController_Create_with_wrong_format(t *testing.T) {
+	folderController := NewFolderController()
+	name := "user1"
+	folderName1 := "# folder1"
+	description1 := "description1"
+
+	originalStderr := os.Stderr
+	r, w, _ := os.Pipe()
+	os.Stderr = w
+
+	folderController.Create(name, folderName1, description1)
+
+	w.Close()
+	os.Stderr = originalStderr
+
+	var buf bytes.Buffer
+	_, _ = buf.ReadFrom(r)
+
+	expectedOutput := fmt.Sprintf(constant.ErrMsgContainInvalidChars, folderName1)
+	assert.Equal(t, constant.PrefixError+expectedOutput+"\n", buf.String())
+}
+
 func Test_folderController_Delete(t *testing.T) {
 	folderController := NewFolderController()
 	name := "user1"
@@ -213,6 +235,28 @@ func Test_folderController_Rename(t *testing.T) {
 
 	expectedOutput := fmt.Sprintf(constant.MsgRenameSuccessfully, folderName1, folderName2)
 	assert.Equal(t, expectedOutput+"\n", buf.String())
+}
+
+func Test_folderController_Rename_with_wrong_format(t *testing.T) {
+	folderController := NewFolderController()
+	name := "user1"
+	folderName1 := "folder1"
+	folderName2 := "# folder2"
+
+	originalStderr := os.Stderr
+	r, w, _ := os.Pipe()
+	os.Stderr = w
+
+	folderController.Rename(name, folderName1, folderName2)
+
+	w.Close()
+	os.Stderr = originalStderr
+
+	var buf bytes.Buffer
+	_, _ = buf.ReadFrom(r)
+
+	expectedOutput := fmt.Sprintf(constant.ErrMsgContainInvalidChars, folderName2)
+	assert.Equal(t, constant.PrefixError+expectedOutput+"\n", buf.String())
 }
 
 func Test_folderController_Rename_with_error(t *testing.T) {

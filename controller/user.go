@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"r03921081/vfs/constant"
+	"r03921081/vfs/util"
 )
 
 type IUserController interface {
@@ -18,6 +19,10 @@ func NewUserController() IUserController {
 }
 
 func (u *userController) Register(name string) {
+	if !util.IsValidInput(name, util.ValidName) {
+		PrintError(fmt.Sprintf(constant.ErrMsgContainInvalidChars, name))
+		return
+	}
 	user, err := Register(name)
 	if err != nil {
 		PrintError(err.ErrorMessage())

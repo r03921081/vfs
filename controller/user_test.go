@@ -36,6 +36,26 @@ func Test_userController_Register(t *testing.T) {
 	assert.Equal(t, expectedOutput+"\n", buf.String())
 }
 
+func Test_userController_Register_with_wrong_format(t *testing.T) {
+	userController := NewUserController()
+	name := "#user1"
+
+	originalStderr := os.Stderr
+	r, w, _ := os.Pipe()
+	os.Stderr = w
+
+	userController.Register(name)
+
+	w.Close()
+	os.Stderr = originalStderr
+
+	var buf bytes.Buffer
+	_, _ = buf.ReadFrom(r)
+
+	expectedOutput := fmt.Sprintf(constant.ErrMsgContainInvalidChars, name)
+	assert.Equal(t, constant.PrefixError+expectedOutput+"\n", buf.String())
+}
+
 func Test_userController_Register_with_error(t *testing.T) {
 	userController := NewUserController()
 	name := "user1"

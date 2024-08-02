@@ -37,8 +37,31 @@ func Test_fileController_Create(t *testing.T) {
 	var buf bytes.Buffer
 	_, _ = buf.ReadFrom(r)
 
-	expectedOutput := fmt.Sprintf(constant.MsgCreateSuccessfully, file1)
+	expectedOutput := fmt.Sprintf(constant.MsgCreateFileSuccessfully, file1, name, folderName1)
 	assert.Equal(t, expectedOutput+"\n", buf.String())
+}
+
+func Test_fileController_Create_with_wrong_format(t *testing.T) {
+	fileController := NewFileController()
+	name := "user1"
+	folderName1 := "folder1"
+	description1 := "description1"
+	file1 := "# file1"
+
+	originalStderr := os.Stderr
+	r, w, _ := os.Pipe()
+	os.Stderr = w
+
+	fileController.Create(name, folderName1, file1, description1)
+
+	w.Close()
+	os.Stderr = originalStderr
+
+	var buf bytes.Buffer
+	_, _ = buf.ReadFrom(r)
+
+	expectedOutput := fmt.Sprintf(constant.ErrMsgContainInvalidChars, file1)
+	assert.Equal(t, constant.PrefixError+expectedOutput+"\n", buf.String())
 }
 
 func Test_fileController_Create_with_error(t *testing.T) {
