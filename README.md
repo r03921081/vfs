@@ -81,44 +81,44 @@ type File struct {
 ```
 6. The system uses `userCache`, implemented via the `go-cache` library, to temporarily store data in memory. 
 Here’s an example of the data structure:
-```
+```json
 {
-  "Name": "JohnDoe",
-  "FileSystem": {
-    "Folders": {
-      "folder1": {
-        "Name": "Documents",
-        "Description": "Personal Documents",
-        "Files": {
-          "file1": {
-            "Name": "Resume.pdf",
-            "Description": "My latest resume",
-            "Created": "2023-08-01T10:00:00Z"
+  "name": "JohnDoe",
+  "fileSystem": {
+    "folders": {
+      "Documents": {
+        "name": "Documents",
+        "description": "Personal Documents",
+        "files": {
+          "Resume.pdf": {
+            "name": "Resume.pdf",
+            "description": "My latest resume",
+            "created": "2023-08-01T10:00:00Z"
           },
-          "file2": {
-            "Name": "CoverLetter.pdf",
-            "Description": "Cover letter for job application",
-            "Created": "2023-08-01T11:00:00Z"
+          "CoverLetter.pdf": {
+            "name": "CoverLetter.pdf",
+            "description": "Cover letter for job application",
+            "created": "2023-08-01T11:00:00Z"
           }
         },
-        "Created": "2023-08-01T09:00:00Z"
+        "created": "2023-08-01T09:00:00Z"
       },
-      "folder2": {
-        "Name": "Photos",
-        "Description": "Family vacation photos",
-        "Files": {
-          "file1": {
-            "Name": "Beach.jpg",
-            "Description": "Photo of the beach",
-            "Created": "2023-07-20T15:00:00Z"
+      "Photos": {
+        "name": "Photos",
+        "description": "Family vacation photos",
+        "files": {
+          "Beach.jpg": {
+            "name": "Beach.jpg",
+            "description": "Photo of the beach",
+            "created": "2023-07-20T15:00:00Z"
           },
-          "file2": {
-            "Name": "Mountain.jpg",
-            "Description": "Photo of the mountain",
-            "Created": "2023-07-21T16:00:00Z"
+          "Mountain.jpg": {
+            "name": "Mountain.jpg",
+            "description": "Photo of the mountain",
+            "created": "2023-07-21T16:00:00Z"
           }
         },
-        "Created": "2023-07-20T14:00:00Z"
+        "created": "2023-07-20T14:00:00Z"
       }
     }
   }
