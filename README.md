@@ -61,7 +61,10 @@ Usage: exit
 5. The file system data structure is as follows:
 ```go
 type User struct {
-	Name    string
+	Name       string
+	FileSystem *FileSystem
+}
+type FileSystem struct {
 	Folders map[string]*Folder
 }
 type Folder struct {
@@ -76,33 +79,52 @@ type File struct {
 	Created     time.Time
 }
 ```
-6. The system uses `CacheStorage`, implemented via the `go-cache` library, to temporarily store data in memory and prevent data races. 
+6. The system uses `userCache`, implemented via the `go-cache` library, to temporarily store data in memory. 
 Here’s an example of the data structure:
 ```
-"user1": {
-    "name": "user1",
-    "folders": {
-        "folder1": {
-            "name": "folder1",
-            "description": "description",
-            "files": {
-                "file1": {
-                    "name": "file1",
-                    "description": "description",
-                    "created": "2024-08-02T12:00:00Z"
-                },
-                "file2": {
-                    "name": "file2",
-                    "description": "description",
-                    "created": "2024-08-02T12:00:00Z"
-                }
-            },
-            "created": "2024-08-02T12:00:00Z"
-        } 
+{
+  "Name": "JohnDoe",
+  "FileSystem": {
+    "Folders": {
+      "folder1": {
+        "Name": "Documents",
+        "Description": "Personal Documents",
+        "Files": {
+          "file1": {
+            "Name": "Resume.pdf",
+            "Description": "My latest resume",
+            "Created": "2023-08-01T10:00:00Z"
+          },
+          "file2": {
+            "Name": "CoverLetter.pdf",
+            "Description": "Cover letter for job application",
+            "Created": "2023-08-01T11:00:00Z"
+          }
+        },
+        "Created": "2023-08-01T09:00:00Z"
+      },
+      "folder2": {
+        "Name": "Photos",
+        "Description": "Family vacation photos",
+        "Files": {
+          "file1": {
+            "Name": "Beach.jpg",
+            "Description": "Photo of the beach",
+            "Created": "2023-07-20T15:00:00Z"
+          },
+          "file2": {
+            "Name": "Mountain.jpg",
+            "Description": "Photo of the mountain",
+            "Created": "2023-07-21T16:00:00Z"
+          }
+        },
+        "Created": "2023-07-20T14:00:00Z"
+      }
     }
+  }
 }
 ```
 7. Interfaces are utilized to facilitate easy changes and accommodate different implementations.
-8. All errors in the system are thrown as ICodeError and are uniformly printed at the controller level.
+8. All errors in the system are thrown as ICodeError and are uniformly printed at the controller layer.
 9. The controller, service, and repository layers all include unit tests for their respective functions.
-10. For testing the command controller, I used the examples provided in the assignment to perform tests.
+10. For testing the `command` controller, I used the examples provided in the assignment to perform tests.

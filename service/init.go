@@ -9,14 +9,20 @@ func init() {
 }
 
 var (
-	Register = repository.UserRepository.Register
+	FlushUserCache = repository.FlushUserCache
 
-	CreateFolder = repository.FolderRepository.Create
-	DeleteFolder = repository.FolderRepository.Delete
-	ListFolders  = repository.FolderRepository.List
-	RenameFolder = repository.FolderRepository.Rename
+	IsUserExist = repository.UserCacheRepository.IsUserExist
+	SetUser     = repository.UserCacheRepository.SetUser
 
-	CreateFile = repository.FileRepository.Create
-	DeleteFile = repository.FileRepository.Delete
-	ListFiles  = repository.FileRepository.List
+	IsUserFolderExist = repository.UserCacheRepository.IsUserFolderExist
+	SetUserFolder     = repository.UserCacheRepository.SetUserFolder
+	DeleteUserFolder  = repository.UserCacheRepository.DeleteUserFolder
+	GetUserFolder     = repository.UserCacheRepository.GetUserFolder
+	GetUserFolders    = repository.UserCacheRepository.GetUserFolders
+
+	IsUserFileExist = repository.UserCacheRepository.IsUserFileExist
+	SetUserFile     = repository.UserCacheRepository.SetUserFile
+	GetUserFile     = repository.UserCacheRepository.GetUserFile
+	GetUserFiles    = repository.UserCacheRepository.GetUserFiles
+	DeleteUserFile  = repository.UserCacheRepository.DeleteUserFile
 )

@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"os"
 	"r03921081/vfs/constant"
 	"r03921081/vfs/util"
 	"strings"
@@ -32,6 +33,9 @@ func (c *commandController) Handle(command string) {
 	}
 
 	switch constant.Command(parts[0]) {
+	case constant.CommandExit:
+		os.Exit(0)
+		return
 	case constant.CommandRegister:
 		if len(parts) != 2 {
 			PrintError(constant.PromptRegister)

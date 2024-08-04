@@ -1,12 +1,14 @@
 package service
 
 import (
+	"fmt"
 	"r03921081/vfs/common"
+	"r03921081/vfs/constant"
 	"r03921081/vfs/model"
 )
 
 type IFolderService interface {
-	Create(username string, folder *model.Folder) (*model.Folder, common.ICodeError)
+	Create(username, folderName, description string) (*model.Folder, common.ICodeError)
 	Delete(username, folderName string) common.ICodeError
 	List(username, sortby, orderby string) ([]*model.Folder, common.ICodeError)
 	Rename(username, oldFolderName, newFolderName string) common.ICodeError
@@ -20,18 +22,62 @@ func NewFolderService() IFolderService {
 	return &folderService{}
 }
 
-func (s *folderService) Create(username string, folder *model.Folder) (*model.Folder, common.ICodeError) {
-	return CreateFolder(username, folder)
+func (s *folderService) Create(username, folderName, description string) (*model.Folder, common.ICodeError) {
+	if !IsUserExist(username) {
+		return nil, common.NewCodeError(fmt.Sprintf(constant.ErrMsgDoesNotExist, username))
+	}
+	if IsUserFolderExist(username, folderName) {
+		return nil, common.NewCodeError(fmt.Sprintf(constant.ErrMsgHasAlreadyExisted, folderName))
+	}
+
+	folder := model.NewFolder(folderName, description)
+	SetUserFolder(username, folder)
+	return folder, nil
 }
 
 func (s *folderService) Delete(username, folderName string) common.ICodeError {
-	return DeleteFolder(username, folderName)
+	if !IsUserExist(username) {
+		return common.NewCodeError(fmt.Sprintf(constant.ErrMsgDoesNotExist, username))
+	}
+	if !IsUserFolderExist(username, folderName) {
+		return common.NewCodeError(fmt.Sprintf(constant.ErrMsgDoesNotExist, folderName))
+	}
+	DeleteUserFolder(username, folderName)
+	return nil
 }
 
 func (s *folderService) List(username, sortby, orderby string) ([]*model.Folder, common.ICodeError) {
-	return ListFolders(username, sortby, orderby)
+	if !IsUserExist(username) {
+		return nil, common.NewCodeError(fmt.Sprintf(constant.ErrMsgDoesNotExist, username))
+	}
+	folders := []*model.Folder{}
+	for _, folder := range GetUserFolders(username) {
+		folders = append(folders, folder)
+	}
+	if len(folders) == 0 {
+		return folders, nil
+	}
+
+	folders = sortItems(folders, sortby, orderby)
+
+	return folders, nil
 }
 
 func (s *folderService) Rename(username, oldFolderName, newFolderName string) common.ICodeError {
-	return RenameFolder(username, oldFolderName, newFolderName)
+	if !IsUserExist(username) {
+		return common.NewCodeError(fmt.Sprintf(constant.ErrMsgDoesNotExist, username))
+	}
+	if !IsUserFolderExist(username, oldFolderName) {
+		return common.NewCodeError(fmt.Sprintf(constant.ErrMsgDoesNotExist, oldFolderName))
+	}
+	if IsUserFolderExist(username, newFolderName) {
+		return common.NewCodeError(fmt.Sprintf(constant.ErrMsgHasAlreadyExisted, newFolderName))
+	}
+	oldFolder := GetUserFolder(username, oldFolderName)
+	newFolder := model.NewFolder(newFolderName, oldFolder.Description)
+	newFolder.SetFiles(oldFolder.GetFiles())
+
+	SetUserFolder(username, newFolder)
+	DeleteUserFolder(username, oldFolderName)
+	return nil
 }

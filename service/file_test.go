@@ -1,7 +1,7 @@
 package service
 
 import (
-	"r03921081/vfs/common"
+	"fmt"
 	"r03921081/vfs/constant"
 	"r03921081/vfs/model"
 	"testing"
@@ -16,23 +16,58 @@ func Test_fileService_Create(t *testing.T) {
 	description1 := "description1"
 	file1 := "file1"
 
-	// Create file successfully
-	CreateFile = func(username string, folderName string, file *model.File) (*model.File, common.ICodeError) {
-		return file, nil
+	// Mock IsUserExist
+	IsUserExist = func(username string) bool {
+		return false
 	}
-	file, err := fileService.Create(name, folder1, model.NewFile(file1, description1))
+
+	// User does not exist
+	file, err := fileService.Create(name, folder1, file1, description1)
+	assert.NotNil(t, err)
+	assert.Equal(t, fmt.Sprintf(constant.ErrMsgDoesNotExist, name), err.ErrorMessage())
+	assert.Nil(t, file)
+
+	// Mock IsUserExist
+	IsUserExist = func(username string) bool {
+		return true
+	}
+
+	// Mock IsUserFolderExist
+	IsUserFolderExist = func(username, folderName string) bool {
+		return false
+	}
+
+	// Create file failed because folder does not exist
+	file, err = fileService.Create(name, folder1, file1, description1)
+	assert.NotNil(t, err)
+	assert.Equal(t, fmt.Sprintf(constant.ErrMsgDoesNotExist, folder1), err.ErrorMessage())
+	assert.Nil(t, file)
+
+	// Mock IsUserFolderExist
+	IsUserFolderExist = func(username, folderName string) bool {
+		return true
+	}
+
+	// Mock IsUserFileExist
+	IsUserFileExist = func(username, folderName, fileName string) bool {
+		return false
+	}
+
+	// Create file successfully
+	file, err = fileService.Create(name, folder1, file1, description1)
 	assert.Nil(t, err)
 	assert.NotNil(t, file)
 	assert.Equal(t, file1, file.Name)
-	assert.Equal(t, description1, file.Description)
 
-	// Create file failed
-	CreateFile = func(username string, folderName string, file *model.File) (*model.File, common.ICodeError) {
-		return nil, common.NewCodeError(constant.ErrMsgHasAlreadyExisted)
+	// Mock IsUserFileExist
+	IsUserFileExist = func(username, folderName, fileName string) bool {
+		return true
 	}
-	file, err = fileService.Create(name, folder1, model.NewFile(file1, description1))
+
+	// Create file failed because file already exists
+	file, err = fileService.Create(name, folder1, file1, description1)
 	assert.NotNil(t, err)
-	assert.Equal(t, constant.ErrMsgHasAlreadyExisted, err.ErrorMessage())
+	assert.Equal(t, fmt.Sprintf(constant.ErrMsgHasAlreadyExisted, file1), err.ErrorMessage())
 	assert.Nil(t, file)
 }
 
@@ -42,20 +77,54 @@ func Test_fileService_Delete(t *testing.T) {
 	folder1 := "folder1"
 	file1 := "file1"
 
-	// Delete file successfully
-	DeleteFile = func(username string, folderName string, fileName string) common.ICodeError {
-		return nil
+	// Mock IsUserExist
+	IsUserExist = func(username string) bool {
+		return false
 	}
-	err := fileService.Delete(name, folder1, file1)
-	assert.Nil(t, err)
 
-	// Delete file failed
-	DeleteFile = func(username string, folderName string, fileName string) common.ICodeError {
-		return common.NewCodeError(constant.ErrMsgDoesNotExist)
+	// User does not exist
+	err := fileService.Delete(name, folder1, file1)
+	assert.NotNil(t, err)
+	assert.Equal(t, fmt.Sprintf(constant.ErrMsgDoesNotExist, name), err.ErrorMessage())
+
+	// Mock IsUserExist
+	IsUserExist = func(username string) bool {
+		return true
 	}
+
+	// Mock IsUserFolderExist
+	IsUserFolderExist = func(username, folderName string) bool {
+		return false
+	}
+
+	// Folder does not exist
 	err = fileService.Delete(name, folder1, file1)
 	assert.NotNil(t, err)
-	assert.Equal(t, constant.ErrMsgDoesNotExist, err.ErrorMessage())
+	assert.Equal(t, fmt.Sprintf(constant.ErrMsgDoesNotExist, folder1), err.ErrorMessage())
+
+	// Mock IsUserFolderExist
+	IsUserFolderExist = func(username, folderName string) bool {
+		return true
+	}
+
+	// Mock IsUserFileExist
+	IsUserFileExist = func(username, folderName, fileName string) bool {
+		return false
+	}
+
+	// File does not exist
+	err = fileService.Delete(name, folder1, file1)
+	assert.NotNil(t, err)
+	assert.Equal(t, fmt.Sprintf(constant.ErrMsgDoesNotExist, file1), err.ErrorMessage())
+
+	// Mock IsUserFileExist
+	IsUserFileExist = func(username, folderName, fileName string) bool {
+		return true
+	}
+
+	// Delete file successfully
+	err = fileService.Delete(name, folder1, file1)
+	assert.Nil(t, err)
 }
 
 func Test_fileService_List(t *testing.T) {
@@ -63,23 +132,64 @@ func Test_fileService_List(t *testing.T) {
 	name := "user1"
 	folder1 := "folder1"
 	file1 := "file1"
+	sortby := constant.SortName
+	orderby := constant.OrderAsc
+
+	// Mock IsUserExist
+	IsUserExist = func(username string) bool {
+		return false
+	}
+
+	// User does not exist
+	files, err := fileService.List(name, folder1, sortby, orderby)
+	assert.NotNil(t, err)
+	assert.Equal(t, fmt.Sprintf(constant.ErrMsgDoesNotExist, name), err.ErrorMessage())
+	assert.Nil(t, files)
+
+	// Mock IsUserExist
+	IsUserExist = func(username string) bool {
+		return true
+	}
+
+	// Mock IsUserFolderExist
+	IsUserFolderExist = func(username, folderName string) bool {
+		return false
+	}
+
+	// Folder does not exist
+	files, err = fileService.List(name, folder1, sortby, orderby)
+	assert.NotNil(t, err)
+	assert.Equal(t, fmt.Sprintf(constant.ErrMsgDoesNotExist, folder1), err.ErrorMessage())
+	assert.Nil(t, files)
+
+	// Mock IsUserFolderExist
+	IsUserFolderExist = func(username, folderName string) bool {
+		return true
+	}
+
+	// Mock GetUserFiles
+	GetUserFiles = func(username, folderName string) map[string]*model.File {
+		return nil
+	}
 
 	// List files successfully
-	ListFiles = func(username string, folderName string, sortby string, orderby string) ([]*model.File, common.ICodeError) {
-		return []*model.File{model.NewFile(file1, "")}, nil
+	files, err = fileService.List(name, folder1, sortby, orderby)
+	assert.Nil(t, err)
+	assert.NotNil(t, files)
+	assert.Equal(t, 0, len(files))
+
+	// Mock GetUserFiles
+	GetUserFiles = func(username, folderName string) map[string]*model.File {
+		return map[string]*model.File{
+			file1: {
+				Name: file1,
+			},
+		}
 	}
-	files, err := fileService.List(name, folder1, constant.SortCreated, constant.OrderAsc)
+
+	// List files successfully
+	files, err = fileService.List(name, folder1, sortby, orderby)
 	assert.Nil(t, err)
 	assert.NotNil(t, files)
 	assert.Equal(t, 1, len(files))
-	assert.Equal(t, file1, files[0].Name)
-
-	// List files failed
-	ListFiles = func(username string, folderName string, sortby string, orderby string) ([]*model.File, common.ICodeError) {
-		return nil, common.NewCodeError(constant.ErrMsgDoesNotExist)
-	}
-	files, err = fileService.List(name, folder1, constant.SortCreated, constant.OrderAsc)
-	assert.NotNil(t, err)
-	assert.Equal(t, constant.ErrMsgDoesNotExist, err.ErrorMessage())
-	assert.Nil(t, files)
 }

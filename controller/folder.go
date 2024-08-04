@@ -3,7 +3,6 @@ package controller
 import (
 	"fmt"
 	"r03921081/vfs/constant"
-	"r03921081/vfs/model"
 	"r03921081/vfs/util"
 )
 
@@ -27,8 +26,7 @@ func (c *folderController) Create(username string, folderName, description strin
 		PrintError(fmt.Sprintf(constant.ErrMsgContainInvalidChars, folderName))
 		return
 	}
-	folder := model.NewFolder(folderName, description)
-	folder, err := CreateFolder(username, folder)
+	folder, err := CreateFolder(username, folderName, description)
 	if err != nil {
 		PrintError(err.ErrorMessage())
 		return

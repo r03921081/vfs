@@ -25,8 +25,8 @@ func Test_fileController_Create(t *testing.T) {
 	r, w, _ := os.Pipe()
 	os.Stdout = w
 
-	CreateFile = func(username string, folderName string, file *model.File) (*model.File, common.ICodeError) {
-		return file, nil
+	CreateFile = func(username string, folderName string, fileName string, description string) (*model.File, common.ICodeError) {
+		return model.NewFile(file1, description), nil
 	}
 
 	fileController.Create(name, folderName1, file1, description1)
@@ -75,7 +75,7 @@ func Test_fileController_Create_with_error(t *testing.T) {
 	r, w, _ := os.Pipe()
 	os.Stderr = w
 
-	CreateFile = func(username string, folderName string, file *model.File) (*model.File, common.ICodeError) {
+	CreateFile = func(username string, folderName string, fileName string, description string) (*model.File, common.ICodeError) {
 		return nil, common.NewCodeError(fmt.Sprintf(constant.ErrMsgDoesNotExist, username))
 	}
 

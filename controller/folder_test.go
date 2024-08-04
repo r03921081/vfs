@@ -23,8 +23,8 @@ func Test_folderController_Create(t *testing.T) {
 	r, w, _ := os.Pipe()
 	os.Stdout = w
 
-	CreateFolder = func(username string, folder *model.Folder) (*model.Folder, common.ICodeError) {
-		return folder, nil
+	CreateFolder = func(username string, folderName string, description string) (*model.Folder, common.ICodeError) {
+		return model.NewFolder(folderName, description), nil
 	}
 
 	folderController.Create(name, folderName1, description1)
@@ -49,7 +49,7 @@ func Test_folderController_Create_with_error(t *testing.T) {
 	r, w, _ := os.Pipe()
 	os.Stderr = w
 
-	CreateFolder = func(username string, folder *model.Folder) (*model.Folder, common.ICodeError) {
+	CreateFolder = func(username string, folderName string, description string) (*model.Folder, common.ICodeError) {
 		return nil, common.NewCodeError(fmt.Sprintf(constant.ErrMsgDoesNotExist, username))
 	}
 

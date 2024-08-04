@@ -3,7 +3,6 @@ package controller
 import (
 	"fmt"
 	"r03921081/vfs/constant"
-	"r03921081/vfs/model"
 	"r03921081/vfs/util"
 )
 
@@ -26,8 +25,7 @@ func (c *fileController) Create(username, folderName, fileName, description stri
 		PrintError(fmt.Sprintf(constant.ErrMsgContainInvalidChars, fileName))
 		return
 	}
-	file := model.NewFile(fileName, description)
-	file, err := CreateFile(username, folderName, file)
+	file, err := CreateFile(username, folderName, fileName, description)
 	if err != nil {
 		PrintError(err.ErrorMessage())
 		return

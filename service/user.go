@@ -1,7 +1,9 @@
 package service
 
 import (
+	"fmt"
 	"r03921081/vfs/common"
+	"r03921081/vfs/constant"
 	"r03921081/vfs/model"
 )
 
@@ -17,11 +19,12 @@ func NewUserService() *userService {
 	return &userService{}
 }
 
-func (u *userService) Register(name string) (*model.User, common.ICodeError) {
-	user := model.NewUser(name)
-	err := Register(user)
-	if err != nil {
-		return nil, err
+func (u *userService) Register(username string) (*model.User, common.ICodeError) {
+	if IsUserExist(username) {
+		return nil, common.NewCodeError(fmt.Sprintf(constant.ErrMsgHasAlreadyExisted, username))
 	}
+
+	user := model.NewUser(username)
+	SetUser(username, user)
 	return user, nil
 }
